@@ -19,11 +19,7 @@ module.exports = function transformer(file, api) {
       },
 
       MustacheStatement(node) {
-        if (
-          (node.type === 'MustacheStatement' || node.type === 'BlockStatement') &&
-          node.params &&
-          node.params.length
-        ) {
+        if (node.params && node.params.length) {
           node.params.forEach(param => {
             if (
               param.original &&
@@ -40,11 +36,7 @@ module.exports = function transformer(file, api) {
       },
 
       BlockStatement(node) {
-        if (
-          (node.type === 'MustacheStatement' || node.type === 'BlockStatement') &&
-          node.params &&
-          node.params.length
-        ) {
+        if (node.params && node.params.length) {
           node.params.forEach(param => {
             if (
               param.original &&

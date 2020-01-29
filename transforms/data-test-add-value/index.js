@@ -1,5 +1,3 @@
-const { getParser } = require('codemod-cli').jscodeshift;
-const { getOptions: getCLIOptions } = require('codemod-cli');
 const recast = require('ember-template-recast');
 
 module.exports = function transformer(file, api) {
@@ -12,7 +10,7 @@ module.exports = function transformer(file, api) {
           if (
             attribute.value &&
             attribute.value.type === 'TextNode' &&
-attribute.name.includes('data-test') &&
+            attribute.name.includes('data-test') &&
             attribute.value.chars === ''
           ) {
             attribute.value.chars = '="true"';
@@ -20,14 +18,11 @@ attribute.name.includes('data-test') &&
         }
       },
 
-
       MustacheStatement(node) {
         if (
           (node.type === 'MustacheStatement' || node.type === 'BlockStatement') &&
           node.params &&
-          node.params.length &&
-          node.path.original !== 't-def' &&
-          node.path.original !== 't'
+          node.params.length
         ) {
           node.params.forEach(param => {
             if (
@@ -45,21 +40,21 @@ attribute.name.includes('data-test') &&
       },
 
       BlockStatement(node) {
-         if (
-           (node.type === 'MustacheStatement' || node.type === 'BlockStatement') &&
-           node.params &&
-           node.params.length
-         ) {
-           node.params.forEach(param => {
-             if (
-               param.original &&
-               typeof param.original === 'string' &&
-               param.original.includes('data-test')
-             ) {
-               node.hash.pairs.push(b.pair(param.original, b.boolean(true)));
-             }
-           });
-         }
+        if (
+          (node.type === 'MustacheStatement' || node.type === 'BlockStatement') &&
+          node.params &&
+          node.params.length
+        ) {
+          node.params.forEach(param => {
+            if (
+              param.original &&
+              typeof param.original === 'string' &&
+              param.original.includes('data-test')
+            ) {
+              node.hash.pairs.push(b.pair(param.original, b.boolean(true)));
+            }
+          });
+        }
       },
     };
   });
